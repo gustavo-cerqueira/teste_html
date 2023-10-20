@@ -56,8 +56,8 @@
 
     .col_top {
     
-        min-width: 350px;
-        max-width: 1200px;
+        /*min-width: 350px;
+        max-width: 1200px;*/
 
         align-items:center;
         justify-content:center;               
@@ -142,21 +142,21 @@ document.addEventListener('DOMContentLoaded', function() {
             //Preciso guardar as larguras das colunas que não tem largura definida antes de manipular as larguras individuais
             cols.forEach(function (col) {
                 var style = window.getComputedStyle(col);
-                console.log(style.width);
-                console.log(style.minWidth);
-                console.log(style.maxWidth);
+                //console.log(style.width);
+                //console.log(style.minWidth);
+                //console.log(style.maxWidth);
 
                 var percentualWidth = getPercentualWidth(col);
-
-                if (percentualWidth !== null)
-                {
-                    console.log(percentualWidth);
-                }
 
                 if (style.minWidth == 'auto' && style.maxWidth == 'none' && percentualWidth === null) {
                     var larguraCol = col.offsetWidth;
                     // Adiciona o valor de larguraColuna ao array
-                    largurasColunas.push(larguraCol);
+                    if (larguraCol < 500)
+                    {
+                        largurasColunas.push(larguraCol);
+                    } else {
+                        largurasColunas.push(null);
+                    }                    
                 } else {
                     largurasColunas.push(null);
                 }
