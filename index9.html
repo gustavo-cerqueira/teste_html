@@ -1,0 +1,212 @@
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    </head>
+<style>
+
+    /*GLOBAL VARS*/
+    :root {
+        --width-left: 0px;
+        --width-right: 0px;
+        --height-header: 0px;
+        --height-footer: 0px;    
+        
+        --primary-color: #0aebfb;
+    }
+
+    /*DEFAULT BASE CLASSES*/
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    .row {
+        display: flex;   
+        flex: 1;     
+        flex-wrap: wrap;
+        flex-direction: row; 
+        
+    }
+
+    .col {
+        display:flex;
+        flex: 1;
+        flex-wrap: wrap;    
+        flex-direction: column;          
+    }
+
+
+    .row_editor {
+        border: blue 1px dotted;   
+        padding: 3px;     
+    }
+
+    .col_editor {
+        min-height: 50px; 
+        border: red 1px dashed;        
+    }
+
+    .row_top {
+        align-items: center;
+        justify-content: center;
+    }
+
+    .col_top {
+    
+        min-width: 350px;
+        max-width: 1200px;
+
+        align-items:center;
+        justify-content:center;               
+                
+    }
+
+    .body_background {
+        background-color: lightgray;       
+        
+    }
+
+    .card {  
+        
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        background-color: #f5f5f5;   
+        gap: 10px;
+        padding: 20px;
+
+        
+    }
+
+    .card2 {
+        
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        background-color: #13df39;    
+        gap: 10px;
+        padding: 5px;
+    }
+
+    .card_width_fixed {
+        min-width: 350px;
+        max-width: 350px;
+        
+    }
+
+    .card_width_relative {
+        width: 100%;                
+    }
+       
+</style>
+    
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+    function getPercentualWidth(element) {
+        // Itera sobre todas as folhas de estilo
+        for (let i = 0; i < document.styleSheets.length; i++) {
+            const sheet = document.styleSheets[i];
+            // Alguns navegadores restringem o acesso às folhas de estilo de outras origens
+            try {
+                const rules = sheet.cssRules || sheet.rules;
+                // Itera sobre todas as regras na folha de estilo
+                for (let j = 0; j < rules.length; j++) {
+                    const rule = rules[j];
+                    // Verifica se a regra se aplica ao elemento
+                    if (element.matches(rule.selectorText)) {
+                        // Verifica se a regra define um valor de width em percentual
+                        const width = rule.style.width;
+                        if (width && width.endsWith('%')) {
+                            return parseFloat(width);
+                        }
+                    }
+                }
+            } catch (e) {
+                return null;
+            }
+        }
+        return null;
+    }
+
+    function ajustarColunas(pai) {
+        var rows = pai.querySelectorAll(':scope > .row'); // pega apenas as rows diretas
+        
+        rows.forEach(function(row) {
+            
+            var cols = row.querySelectorAll(':scope > .col'); // pega apenas as cols diretas
+            
+            var largurasColunas = [];
+            var col_index = 0;
+            //Preciso guardar as larguras das colunas que não tem largura definida antes de manipular as larguras individuais
+            cols.forEach(function (col) {
+                var style = window.getComputedStyle(col);
+                console.log(style.width);
+                console.log(style.minWidth);
+                console.log(style.maxWidth);
+
+                var percentualWidth = getPercentualWidth(col);
+
+                if (percentualWidth !== null)
+                {
+                    console.log(percentualWidth);
+                }
+
+                if (style.minWidth == 'auto' && style.maxWidth == 'none' && percentualWidth === null) {
+                    var larguraCol = col.offsetWidth;
+                    // Adiciona o valor de larguraColuna ao array
+                    largurasColunas.push(larguraCol);
+                } else {
+                    largurasColunas.push(null);
+                }
+            });
+            //Preciso definir as larguras das colunas que não tem largura definida
+            cols.forEach(function (col) {
+                if (largurasColunas[col_index] !== null) {
+                    col.style.minWidth = largurasColunas[col_index] + 'px';
+                    col.style.maxWidth = largurasColunas[col_index] + 'px';
+                }
+                col_index++;
+                ajustarColunas(col); // chamada recursiva
+            });
+           
+        });
+    }
+
+    ajustarColunas(document.body);
+    
+});
+</script>
+
+<body class="body_background">
+    <div class="row row_editor row_top"> 
+        <div class="col col_editor col_top"> 
+
+            
+            <div class="row row_editor ">
+                <div class="col col_editor card card_width_fixed">Card 1</div>
+                <div class="col col_editor card">Card 2</div>                
+                <div class="col col_editor card">
+                    <div class="row row_editor sub_container">
+                        <div class="col col_editor card2">Card 11</div>
+                        <div class="col col_editor card2">Card 22</div>
+                        <div class="col col_editor card2">Card 33</div>
+                        <div class="col col_editor card2">Card 44</div>
+                    </div>
+                    <div class="row row_editor sub_container">
+                        <div class="col col_editor card2">Card 11</div>
+                        <div class="col col_editor card2">Card 22</div>
+                        <div class="col col_editor card2">Card 33</div>                    
+                    </div>       
+                </div>
+                <div class="col col_editor card">Card 4</div>
+                <div class="col col_editor card card_width_relative">Card 5</div>
+            </div>            
+            
+
+        </div>    
+    </div>
+    
+</body>
+</html>
