@@ -33,7 +33,6 @@
 
     .col {
         display:flex;
-        /* FLEX=1. Somente em colunas para que ela não fique subordinada as dimensões dos seus filhos */
         flex: 1;
         flex-wrap: wrap;    
         flex-direction: column;  
@@ -182,6 +181,15 @@
        /* fim */      
     }
 
+    .col_relative {
+        width: 80%;
+        flex:none;        
+        max-width: initial; 
+        min-width: initial;
+        padding: 20px;
+        background-color: #16f5c1;
+    }
+
     
   
     
@@ -196,7 +204,7 @@
                 <div class="col">
 
                     <div class="row row_nps_1"> 
-                        <div class="col col_nps">
+                        <div class="col col_nps col_relative">
                             Centralizado
                         </div>
                     </div>
