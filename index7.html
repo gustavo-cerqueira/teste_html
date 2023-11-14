@@ -24,32 +24,33 @@
     }
 
     .row {
-        display: flex;        
+        display: flex;     
+        flex: 1;   
         flex-wrap: wrap;
-        flex-direction: row;  
-        overflow: auto; 
+        flex-direction: row; 
+       
     }
 
     .col {
         display:flex;
-        /* FLEX=1. Somente em colunas para que ela não fique subordinada as dimensões dos seus filhos */
         flex: 1;
         flex-wrap: wrap;    
         flex-direction: column;  
-        overflow: auto;
+        background-color: green;       
+       
     }
 
 
     .row_top {
-        width: 100%;
-        height: 100%;
-
-        padding: 10px;
+        
+      
 
         align-items: center;  
         justify-content: center;
         
-        background-color: gray;        
+        background-color: gray;   
+        
+        min-height: 150px;
         
     }
 
@@ -72,15 +73,23 @@
     
     
     
+    
 </style>
 <body class="body_background">
     <!-- Simulando o ambiente de Preview -->
     <div class="row row_top"> 
         <div class="col col_top"> 
-
-            Componentes Aqui
-
+            <div class="row">
+                <div class="col"> 
+                    Sub Componente 1
+                </div>
+            </div>
         </div>    
+        <div class="col col_top col_empty"> 
+
+            Vazio Aqui
+
+        </div> 
     </div>
     
 </body>
